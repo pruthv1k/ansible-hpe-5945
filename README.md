@@ -1,88 +1,8 @@
 # Introduction
 
-This project contains Ansible modules that can be used to automate HP Comware 7 switches.  The modules rely on NETCONF to communicate with the device for making configuration changes and getting operational data back such as LLDP neighbors, OS, serial number, uptime, and active interfaces on the device.
+This project contains playbooks that can are used to automate HP Comware 5945 switch.  
 
-A byproduct of the Ansible modules was the creation of a Python library that is being used to simplify each module, but also streamline communication between each module and the NETCONF interface of each HP COM7 switch.  The library can be found [here](https://github.com/HPENetworking/pyhpecw7).  While the library is being used for Ansible modules, it can also be used to create standalone applications.
-
-  * [Introduction](#introduction)
-  * [Modules](#modules)
-  * [Getting Started](#getting-started)
-    * Hands-on Examples
-  * [Requirements](#requirements)
-  * [Detailed Docs](https://hp-ansible.readthedocs.io/en/latest/index.html)
-
-# Modules
-
-The list of Ansible modules that has been developed can be broken down into two types of modules: read-only modules and read-write modules.  The read-write modules, or those that can implement a change on the system, can further be broken down into feature-level and system-level modules.
-
-The list of modules can be seen below while a more detailed summary of each module can be found [here.](module_docs/module_docs.md)
-
-## Read-Only Modules
-
-The following modules gather data from the switches.  They do NOT impact system or feature level configuration.
-
-* comware_facts - gathers device facts (characteristics) such as hostname, operating system (OS), serial number, uptime, localtime, list of interfaces, and hardware platform.
-* comware_neighbors - gathers neighbor information
-* comware_ping - tests remote reachability to specific destinations from the switch
-
-## Read-Write Modules
-
-### System Modules
-
-Several modules can be used to modify system level change on the HP Com7 devices.  They are listed here:
-
-* comware_file_copy - copy file from local Ansible machine to remote switch
-* comware_install_config - copy a valid config file for the desired switch model from local Ansible machine to remote switch and activates it to be the running configuration
-* comware_install_os - copy OS (bin or ipe files) from local Ansible machine to switch, set image to load on next boot, and reboots switch
-* comware_reboot - reboots switch
-* comware_save - saves current config
-* comware_clean_erase - factory defaults the switch (be careful!)
-
-### Feature Modules
-
-Several modules can be used to modify feature level configuration on the HP COM 7 devices.  They are listed here:
-
-* comware_command - send raw CLI command(s) to the device
-* comware_interface - manage physical interface characteristics
-* comware_ipinterface - manage Layer 3 interface attributes
-* comware_switchport - manage Layer 2 interface attributes
-* comware_vlan - manage VLAN attributes
-* comware_portchannel - manage portchannels (LAGGs) and members
-* comware_irf_members - manages IRF membership creation
-* comware_irf_ports - manages IRF port creation and removal
-* comware_vrrp - manage VRRP vrid (group) configuration
-* comware_vrrp_global - manage VRRP global load-balancing method
-* comware_l2vpn_global - enable/disable L2VPN globally
-* comware_vxlan - manages the VXLAN to VSI mapping and associated tunnels
-* comware_vxlan_tunnel - manages VXLAN tunnel interfaces (pre-req to comware_vxlan)
-* comware_vxlan_svc_instance - manages interface level service instance and maps appropriate VSI, i.e. (xconnect)
-
-# Getting Started
-
-Follow these steps to get started with Ansible.  A few of these steps assume you will be working on an Ubuntu host.  If you are using a MAC or another version of Linux, please check the official Ansible [documentation](https://docs.ansible.com/ansible/intro_installation.html#installation) for help on getting Ansible installed. Most of these steps beyond installation will be the same regardless of version of Linux being used.
-
-## Update /etc/hosts file
-
-This step isn't a requirement, but if you want to use hostnames for your switches within Ansible, it's recommended to either have them setup in DNS, or update the `/etc/hosts` file with the appropriate mapping of name to switch IP address (preferably the IP address on the mgmt interface).  For a standalone small lab or test bed, updating the `/etc/hosts` file is usually the quickest.
-
-Here is an example of a hosts file updated with two HP COM7 devices.
-
-```
-127.0.0.1   localhost
-127.0.1.1   devhost
-
-10.1.100.1    hp1
-10.1.100.2    hp2
-
-
-# The following lines are desirable for IPv6 capable hosts
-::1     ip6-localhost ip6-loopback
-fe00::0 ip6-localnet
-ff00::0 ip6-mcastprefix
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-
-```
+The modules rely on NETCONF to communicate with the device for making configuration changes and getting operational data back such as LLDP neighbors, OS, serial number, uptime, and active interfaces on the device.
 
 ## Prepare Switch for Ansible
 
@@ -126,7 +46,7 @@ scp server enable
 ```
 
 
-## Install Ansible
+## Prepare Controller
 
 While in a terminal session on your Linux machine, execute the following commands:
 
@@ -134,24 +54,11 @@ While in a terminal session on your Linux machine, execute the following command
 $ sudo apt-get install python-pip
 $ sudo pip install markupsafe
 $ sudo pip install ansible
-```
-
-## Install HP Comware 7 Python Library
-
-While in a terminal session on your Linux machine, execute one of the following blocks of commands:
-
-**Latest From Source**
-
-```
-$ git clone https://github.com/HPENetworking/pyhpecw7.git
-$ cd pyhpecw7
-$ sudo python setup.py install
-```
-
-**Latest Stable Release via PIP (not supported yet)**
-
-```
-$ sudo pip install pyhpecw7
+$ yum install gcc libffi-devel python-devel OpenSSL-devel
+$ yum install -y python3-setuptools
+$ pip3 install --upgrade pip
+$ pip3 install pycrypto
+$ pip3 install py3hpecw7
 ```
 
 ## Verify Library is Installed Correctly
