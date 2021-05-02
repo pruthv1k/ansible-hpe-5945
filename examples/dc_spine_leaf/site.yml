@@ -1,8 +1,0 @@
----
-
-  - include: build-irf.yml
-  - include: spine.yml
-  - include: leaf.yml
-
-
-
