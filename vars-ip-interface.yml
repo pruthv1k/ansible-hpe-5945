@@ -1,0 +1,4 @@
+---
+ #var_interface: FortyGigE1/0/3 
+ addr: 192.168.245.23
+ mask: 255.255.255.0 

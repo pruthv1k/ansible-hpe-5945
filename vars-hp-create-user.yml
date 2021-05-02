@@ -1,0 +1,4 @@
+---
+ new_user: ansible_test_user
+ new_password: r3dh4t1!
+ new_role_name: network-admin

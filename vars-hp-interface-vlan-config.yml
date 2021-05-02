@@ -1,0 +1,3 @@
+---
+ # interface_name: FortyGigE1/0/2 
+  vlans: "1-3,5,8-10" 

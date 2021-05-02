@@ -1,0 +1,17 @@
+---
+ - name: VLAN Automation with Ansible on HP Com7 Devices
+   hosts: switches 
+   gather_facts: no
+   connection: local
+   vars_files:
+      - vars-ip-interface.yml 
+   tasks:
+      - name: Setting up L3 on the interface {{ var_interface }} with IP {{ var_add }}
+        comware_ipinterface: 
+          name: "{{ var_interface }}"
+          addr: "{{ var_addr }}"
+          mask: "{{ subnet_mask }}"
+          username: "{{ username }}"
+          password: "{{ password }}" 
+          hostname: "{{ inventory_hostname }}"
+

@@ -1,0 +1,19 @@
+---
+ - name: VLAN Automation with Ansible on HP Com7 Devices
+   hosts: switches 
+   gather_facts: no
+   connection: local
+   vars_files:
+      - vars-hp-create-user.yml 
+   tasks:
+     - name: Create {{ new_user }} with privileges {{ new_role_name }}
+       comware_command:
+         type: config
+         command:
+           - local-user {{ new_user }}
+           - password simple {{ new_password }}
+           - service-type ssh http https
+           - authorization-attribute user-role {{ new_role_name }}
+         username: "{{ username }}" 
+         password: "{{ password }}" 
+         hostname: "{{ inventory_hostname }}"

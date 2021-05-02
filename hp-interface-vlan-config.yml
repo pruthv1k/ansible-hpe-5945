@@ -1,0 +1,16 @@
+---
+ - name: VLAN Automation with Ansible on HP Com7 Devices
+   hosts: switches 
+   gather_facts: no
+   connection: local
+   vars_files:
+      - vars-hp-interface-vlan-config.yml 
+   tasks:
+     - name: Configure {{ vlans }} as vlans on {{ interface_name }}
+       comware_switchport: 
+         name: "{{ interface_name }}"
+         link_type: trunk
+         permitted_vlans: "{{ vlans }}"
+         username: "{{ username }}" 
+         password: "{{ password }}" 
+         hostname: "{{ inventory_hostname }}"
