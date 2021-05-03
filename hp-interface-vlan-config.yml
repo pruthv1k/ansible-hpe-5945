@@ -6,11 +6,19 @@
    vars_files:
       - vars-hp-interface-vlan-config.yml 
    tasks:
-     - name: Configure {{ vlans }} as vlans on {{ interface_name }}
-       comware_switchport: 
+     - debug: var=interface_name
+     - name: Configure interface
+       comware_interface:
          name: "{{ interface_name }}"
-         link_type: trunk
-         permitted_vlans: "{{ vlans }}"
+         description: 'ANSIBLE CONFIGURED THIS' 
          username: "{{ username }}" 
-         password: "{{ password }}" 
+         password: "{{ password }}"
          hostname: "{{ inventory_hostname }}"
+   #  - name: Configure vlans on interface
+   #    comware_switchport: 
+   #      name: "{{ interface_name }}"
+   #      link_type: trunk
+   #      permitted_vlans: "{{ vlans }}"
+   #      username: "{{ username }}" 
+   #      password: "{{ password }}" 
+   #      hostname: "{{ inventory_hostname }}"
